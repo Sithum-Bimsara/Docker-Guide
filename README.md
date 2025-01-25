@@ -580,7 +580,106 @@ If your image contains a Node.js script, it will display the output:
 Hello Docker!
 ```
    
-   
+ ---
+ # Linux Distributions
+
+## Overview
+
+Linux distributions, commonly referred to as `"distros,"` are versions of the Linux operating system bundled with various software packages and functionalities to cater to different user needs.
+
+---
+
+### Slide 3: Open Source
+
+
+Open source is the foundation of Linux distributions, enabling collaboration and innovation by providing free access to software source code. This collaborative approach allows developers worldwide to contribute to and enhance the software, fostering rapid development and widespread adoption.
+
+---
+
+### Slide 4: Popular Linux Distros
+
+- **Ubuntu**: Based on Debian, Ubuntu is user-friendly and widely used for desktops and servers.
+- **Debian**: Known for its stability and extensive software repositories, Debian is a foundational distro for many others.
+- **Alpine**: A security-oriented, lightweight distro popular for container-based deployments.
+- **Fedora**: Sponsored by Red Hat, Fedora focuses on innovation and includes the latest features.
+- **CentOS**: A free, community-supported platform functionally compatible with Red Hat Enterprise Linux.
+
+---
+
+## What is Linux?
+
+Linux is a family of open-source Unix-like operating systems based on the Linux kernel, first released by Linus Torvalds on September 17, 1991. As an operating system, Linux manages hardware resources and provides essential services for application software. It's renowned for its stability, security, and flexibility, making it a preferred choice for servers, desktops, and embedded systems. :contentReference[oaicite:0]{index=0}
+
+## Connection to Linux Distributions
+
+A Linux distribution combines the Linux kernel with a selection of software packages, including system libraries, applications, and management tools, to create a complete operating system tailored for specific purposes. Distributions vary in focus, such as user-friendliness, security, or performance optimization, allowing users to choose a distro that best fits their requirements. :contentReference[oaicite:1]{index=1}
+
+## Are All Distros Open Source?
+
+While the Linux kernel itself is open source, not all Linux distributions are entirely open source. Many distros include proprietary software or drivers to enhance hardware compatibility and user experience. However, there are distributions committed to providing a completely free and open-source environment, adhering strictly to the principles of free software. Examples include Trisquel, Parabola, and PureOS, which exclude proprietary components and focus on software freedom. :contentReference[oaicite:2]{index=2}
+
+---
+# Running Linux with Docker
+
+
+## Step 1: Pull the Ubuntu Docker Image
+
+Run the following command to download the official Ubuntu image from Docker Hub:
+
+```bash
+docker pull ubuntu
+```
+
+This pulls the latest version of the Ubuntu image from the official Docker repository.
+
+## Step 2: Run the Ubuntu Container
+
+Start a container interactively using the Ubuntu image:
+
+```
+docker run -it ubuntu
+```
+## Step 3: Verify Container Environment
+Inside the running container, you can use basic Linux commands:
+
+Check the current user:
+```
+whoami
+```
+Output:
+```
+root
+```
+Display the shell information:
+```
+echo $0
+```
+Output:
+```t
+/bin/bash
+```
+View command history inside the container:
+The history command can recall previously executed commands in the session.
+```
+history
+```
+## Step 4: List Docker Containers
+To view all containers (running or stopped), use:
+```
+docker ps -a
+```
+This lists all containers along with their statuses. For example:
+```
+CONTAINER ID   IMAGE    COMMAND                  STATUS                     NAMES
+de3bd5f0e855   ubuntu   "/bin/bash"             Exited (0) 24 hours ago   angry_fermi
+1d873957ae79   ubuntu   "/bin/bash"             Exited (0) 1 minute ago   gifted_haslett
+Additional Observations
+```
+The echo command works inside the container. However, using capitalized Echo results in an error:
+```
+bash: Echo: command not found
+```
+
    
 
 
