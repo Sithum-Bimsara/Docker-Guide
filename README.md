@@ -361,5 +361,230 @@ From the registry, the image is pulled into different environments:
 
 ---
 
+# Docker in Action
+
+## 1. Setting Up the Directory and Files
+
+### Step 1: Create a Directory
+Use the `mkdir` command to create a new directory on the Desktop:
+
+```bash
+mkdir hello-docker
+```
+
+### Step 2: Navigate to the Directory
+Change to the newly created directory using the `cd` command:
+```bash
+cd hello-docker
+```
+
+### Step 3: Open in Visual Studio Code
+Open the directory in Visual Studio Code using:
+```bash
+code .
+```
+
+## 2. Creating the Application File
+
+### Step 4: Create `app.js`
+Inside the `hello-docker` directory, create a file named `app.js`. This file will be considered as our program. Add the following content:
+
+```javascript
+// app.js
+console.log("Hello Docker!");
+```
+![Action](assets/10.png)
+
+This program simply prints "Hello Docker!" to the console.
+
+## 3. Creating the Dockerfile
+
+### Step 5: Create a `Dockerfile`
+Create a file named `Dockerfile` (no extension). Add the following content:
+
+```dockerfile
+# Dockerfile
+
+# Use a lightweight Node.js image as the base image
+FROM node:alpine
+
+# Set the working directory inside the container
+COPY . /app
+WORKDIR /app
+
+# Specify the command to run the application
+CMD node app.js
+```
+
+#### **What is Alpine Linux?**
+
+- Alpine Linux is a minimal and security-focused Linux distribution designed for containers.
+- It is small in size (typically around 5 MB), making it ideal for creating lightweight Docker images.
+
+#### **Why Use node:alpine?**
+- Small Size: The node:alpine image is much smaller compared to the default Node.js images like node:latest, which are based on larger Linux distributions such as Debian or Ubuntu.
+- Faster Builds: A smaller base image reduces the overall size of the Docker image, leading to faster downloads and deployments.
+- Security: Alpine Linux is known for its minimal attack surface, making it a secure choice for containerized applications.
+ 
+#### **Trade-offs of Using Alpine**
+- Limited Tools: Since Alpine is minimal, some tools and libraries commonly found in larger distributions may be missing. If your application relies on such libraries, you may need to install them manually (e.g., using apk add).
+- Potential Compatibility Issues: Some Node.js packages that require native dependencies may not compile easily on Alpine without additional setup.
+
+![Docker Hub](assets/11.png)
+
+### Explanation of the Dockerfile
+- `FROM node:alpine`: Specifies the base image, a lightweight version of Node.js, to build the container.
+- `COPY . /app`: Copies the contents of the current directory on the host to `/app` in the container.
+- `WORKDIR /app`: Sets the working directory inside the container to `/app`.
+- `CMD node app.js`: Specifies the command to run the application (`node app.js`).
+
+## 4. Building and Pushing the Docker Image
+
+### Step 6: Build the Docker Image
+Run the following command to build the Docker image:
+
+```bash
+docker build -t hello-docker .
+```
+- `-t hello-docker`: Tags the image with the name `hello-docker`.
+- `.`: Specifies the current directory as the build context.
+
+### Step 7: Verify the Image Creation
+
+Run the following command to verify that the image has been created:
+
+```
+docker image ls
+```
+
+Example output:  
+
+```
+PS C:\Users\User\Desktop\hello-docker> docker image ls
+REPOSITORY     TAG       IMAGE ID       CREATED          SIZE
+hello-docker   latest    ad4719cb05b2   42 seconds ago   228MB
+```
+
+### Step 8: Login to Docker Hub
+Log in to your Docker Hub account using:
+
+```bash
+docker login
+```
+Enter your Docker Hub username and password when prompted.
+
+### Step 9: Tag the Image
+Tag the image with your Docker Hub username and repository name:
+
+```bash
+docker tag hello-docker:latest <your_dockerhub_username>/hello-docker:latest
+```
+Replace `<your_dockerhub_username>` with your actual Docker Hub username.
+
+#### **Tagging an image in Docker means :**
+assigning it a name and version (or tag) to make it identifiable and easier to manage. When you build an image, Docker assigns it a default "latest" tag if you don't specify one. However, when you want to share the image (e.g., on Docker Hub), you need to provide a unique identifier that includes your Docker Hub username and the repository name.
+
+For example:
+```
+docker tag hello-docker:latest <your_dockerhub_username>/hello-docker:latest
+```
+`hello-docker:latest ` :-The name of the image you built locally and its version tag (latest by default).
+`<your_dockerhub_username>/hello-docker:latest ` :-The name of the image with your Docker Hub username as a prefix. This creates a "fully qualified" name for Docker Hub.
+
+#### This tag ensures that:
+
+- Docker knows which repository on Docker Hub the image belongs to.
+- Users downloading the image can uniquely identify it.
+ 
+Tagging is like labeling a file before sharing it. Without a proper tag, the image cannot be associated with your Docker Hub account and repository.
+
+### Step 10: Push the Image
+Push the image to Docker Hub using:
+
+```bash
+docker push <your_dockerhub_username>/hello-docker:latest
+```
+# Using Play with Docker to Pull and Run a Container from Docker Hub
+
+![Docker Hub](assets/12.png)
+
+## Prerequisites
+- A previously pushed container available on Docker Hub.
+- Docker Hub account credentials.
+- Access to **Play with Docker (PWD)**: [https://labs.play-with-docker.com](https://labs.play-with-docker.com).
+
+## Steps to Pull and Run a Container in Play with Docker
+
+### Step 1: Open Play with Docker
+1. Visit [Play with Docker](https://labs.play-with-docker.com).
+2. Log in with your Docker Hub account.
+3. Once logged in, click **Start** to begin a session.
+
+### Step 2: Create a New Instance
+1. In the Play with Docker interface, click **+ ADD NEW INSTANCE**.
+2. A virtual instance (VM) will be created, and you’ll see a terminal window for interacting with the instance.
+
+![Docker Hub](assets/13.png)
+
+### Step 3: Pull the Docker Image
+1. In the terminal, run the following command to pull your previously pushed Docker image from Docker Hub:
+   ```bash
+   docker pull <your_dockerhub_username>/<repository_name>:latest
+   ```
+Replace `<your_dockerhub_username>` and `<repository_name>` with your `Docker Hub username` and `repository name`. Example:
+
+```
+docker pull sithubmimsara2003/hello-docker:latest
+```
+
+![Docker Hub](assets/15.png)
+
+
+The terminal will show the progress of the pull process. For example:
+```
+Pull complete
+Digest: sha256:<digest_hash>
+Status: Downloaded newer image for <repository>:latest
+```
+### Step 4: Verify the Pulled Image
+To confirm the image is downloaded, run:
+
+```
+docker image ls
+```
+The output will display the list of Docker images available in the instance. Example:
+
+```
+REPOSITORY                  TAG       IMAGE ID       CREATED          SIZE
+sithubmimsara2003/hello-docker   latest    b30095b375c0   13 minutes ago   228MB
+```
+
+### Step 5: Run the Container
+Use the following command to run the container:
+
+```
+docker run <repository>:<tag>
+```
+Example:
+
+```
+docker run sithubmimsara2003/hello-docker:latest
+```
+![Docker Hub](assets/16.png)
+
+The container will execute the command specified in the Dockerfile (e.g., running node app.js).
+
+If your image contains a Node.js script, it will display the output:
+
+```
+Hello Docker!
+```
+   
+   
+   
+
+
+
+
 
 
