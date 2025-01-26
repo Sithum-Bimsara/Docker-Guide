@@ -580,8 +580,249 @@ If your image contains a Node.js script, it will display the output:
 Hello Docker!
 ```
    
-   
-   
+ ---
+ # Linux Distributions
+
+## Overview
+
+Linux distributions, commonly referred to as `"distros,"` are versions of the Linux operating system bundled with various software packages and functionalities to cater to different user needs.
+
+---
+
+### Slide 3: Open Source
+
+
+Open source is the foundation of Linux distributions, enabling collaboration and innovation by providing free access to software source code. This collaborative approach allows developers worldwide to contribute to and enhance the software, fostering rapid development and widespread adoption.
+
+---
+
+### Slide 4: Popular Linux Distros
+
+- **Ubuntu**: Based on Debian, Ubuntu is user-friendly and widely used for desktops and servers.
+- **Debian**: Known for its stability and extensive software repositories, Debian is a foundational distro for many others.
+- **Alpine**: A security-oriented, lightweight distro popular for container-based deployments.
+- **Fedora**: Sponsored by Red Hat, Fedora focuses on innovation and includes the latest features.
+- **CentOS**: A free, community-supported platform functionally compatible with Red Hat Enterprise Linux.
+
+---
+
+## What is Linux?
+
+Linux is a family of open-source Unix-like operating systems based on the Linux kernel, first released by Linus Torvalds on September 17, 1991. As an operating system, Linux manages hardware resources and provides essential services for application software. It's renowned for its stability, security, and flexibility, making it a preferred choice for servers, desktops, and embedded systems. :contentReference[oaicite:0]{index=0}
+
+## Connection to Linux Distributions
+
+A Linux distribution combines the Linux kernel with a selection of software packages, including system libraries, applications, and management tools, to create a complete operating system tailored for specific purposes. Distributions vary in focus, such as user-friendliness, security, or performance optimization, allowing users to choose a distro that best fits their requirements. :contentReference[oaicite:1]{index=1}
+
+## Are All Distros Open Source?
+
+While the Linux kernel itself is open source, not all Linux distributions are entirely open source. Many distros include proprietary software or drivers to enhance hardware compatibility and user experience. However, there are distributions committed to providing a completely free and open-source environment, adhering strictly to the principles of free software. Examples include Trisquel, Parabola, and PureOS, which exclude proprietary components and focus on software freedom. :contentReference[oaicite:2]{index=2}
+
+---
+# Running Linux with Docker
+
+
+## Step 1: Pull the Ubuntu Docker Image
+
+Run the following command to download the official Ubuntu image from Docker Hub:
+
+```bash
+docker pull ubuntu
+```
+
+This pulls the latest version of the Ubuntu image from the official Docker repository.
+
+**or**
+```
+docker run ubuntu
+```
+If you use above command it will find ubuntu image in your local computer, if it is not founfd in locally then it will pull the the image to your local computer.
+Following shows how its looks like if you run it.
+
+```
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+de44b265507a: Download complete
+Digest: sha256:80dd3c3b9c6cecb9f1667e9290b3bc61b78c2678c02cbdae5f0fea92cc6734ab
+Status: Downloaded newer image for ubuntu:latest
+```
+Here's a breakdown of this output:
+
+`Unable to find image 'ubuntu:latest' locally`      
+- Docker checks if the specified image (ubuntu:latest) is available locally. If not, it proceeds to download it from Docker Hub.
+
+`latest: Pulling from library/ubuntu`               
+- Indicates that Docker is pulling the latest version of the Ubuntu image from the official library.
+
+`de44b265507a: Download complete`                   
+- Shows the progress of individual layers being downloaded. Each image consists of multiple layers, and Docker downloads them sequentially.
+
+`Digest: sha256:...`                                
+- Provides the SHA256 hash of the image, ensuring its integrity and authenticity.
+
+`Status: Downloaded newer image for ubuntu:latest`  
+- Confirms that the latest Ubuntu image has been successfully downloaded and is ready for use.
+
+## Step 2: List Docker Containers
+```
+docker ps
+```
+- Lists only the running containers.
+- If no containers are currently running, the command returns an empty list.
+- Useful for checking the active containers.
+```
+CONTAINER ID   IMAGE       COMMAND       CREATED        STATUS       PORTS       NAMES
+123abc456def   ubuntu      "/bin/bash"   5 minutes ago Up 5 minutes             amazing_alpaca
+```
+
+**To view all containers (running or stopped), use:**
+```
+docker ps -a
+```
+This lists all containers along with their statuses. For example:
+```
+CONTAINER ID   IMAGE    COMMAND                  STATUS                     NAMES
+de3bd5f0e855   ubuntu   "/bin/bash"             Exited (0) 24 hours ago   angry_fermi
+1d873957ae79   ubuntu   "/bin/bash"             Exited (0) 1 minute ago   gifted_haslett
+Additional Observations
+```
+## Step 3: Run the Ubuntu Container
+
+### Start a container interactively using the Ubuntu image:
+
+```
+docker run -it ubuntu
+```
+
+**Breakdown of docker `run -it ubuntu`:**
+
+`-i (Interactive Mode):`
+
+- Keeps the STDIN (standard input) open, even if you're not attached to the container.
+- Allows the user to send input directly to the container (e.g., commands for the shell inside the container).
+
+`-t (Pseudo-TTY):`
+
+- Allocates a pseudo-TTY (terminal) for the container.
+- This is needed to create a terminal-like interface, making it possible to run commands interactively.
+
+**Combined Effect of -it:**
+
+When these flags are used together:
+  - You get an interactive terminal session inside the container.
+  - This combination is typically used when you want to run commands or perform tasks inside the container's shell.
+Example Usage:
+```
+docker run -it ubuntu
+```
+- This launches an Ubuntu container and opens an interactive terminal.
+- By default, it runs the container's CMD or entry point (e.g., /bin/bash for many Linux-based images).
+- You can interact with the container just like a Linux terminal.
+
+**What Happens Without -it?**
+
+If you run docker run ubuntu without -it, the container might execute its default command and exit (especially if no long-running process is specified). You won't be able to interact with it directly.
+
+### When you run docker run -it ubuntu, and it starts an interactive shell, the prompt that appears:
+```
+root@21ddf621687e:/# 
+```
+**Shell is a programme that take  our commands and passes them to the os for execution.**
+
+`root:`
+- Indicates the user currently logged into the container.
+- By default, when you run a container, you are logged in as the root user (the superuser in Linux with full administrative privileges).
+- If the container has been configured with other users or you log in as a non-root user, this name would change.
+
+`21ddf621687e:`
+- Represents the container's hostname.
+- Docker assigns a unique container ID (or a truncated version of it) as the hostname for each running container.
+- In this case, 21ddf621687e is the unique identifier of your Ubuntu container.
+- You can view the full container ID using: `docker ps -q`
+
+`/:`
+- Shows the current working directory in the container.
+- / represents the root directory of the container's file system (the highest level of the file hierarchy in Linux).
+- As you navigate through directories within the container (e.g., using cd /home), this part of the prompt will change to reflect the new working directory.
+
+`#:`
+- Indicates that you are working with root privileges in the shell.
+- In Linux shell prompts:
+  ``` 
+  # signifies a superuser (root).
+  $ signifies a regular user.
+  ```
+## Step 4: Verify Container Environment
+Inside the running container, you can use basic Linux commands:
+
+### Check the current user:
+```
+whoami
+```
+Output:
+```
+root
+```
+### Display the shell information:
+```
+echo $0
+```
+Output:
+```t
+/bin/bash
+```
+In the given command:
+ - The $0 variable typically holds the name of the currently running shell or script. When run in an interactive shell, $0 outputs the shell being used. In this case, the output:
+```
+/bin/bash
+```
+can be broken down as follows:
+
+`/bin:`
+- Refers to the directory on the Linux filesystem where binaries (executable programs) are stored.
+- /bin contains essential system programs and tools needed for the system to operate, such as shells (bash, sh, zsh) and basic commands (ls, echo, etc.).
+- It is part of the system's PATH environment variable, so executables in this directory can be run from anywhere.
+
+`bash:`
+- Refers to the name of the shell you are using, which in this case is Bash.
+- Bash stands for **"Bourne Again SHell"**, a widely used shell in Linux and Unix systems.
+- It provides a command-line interface to interact with the operating system.
+
+**Complete Meaning of /bin/bash:**
+The output /bin/bash indicates:
+- You are currently using the Bash shell, which is located in the /bin directory.
+- The shell program /bin/bash is being executed to interpret your commands.
+ 
+### View command history inside the container:
+The history command can recall previously executed commands in the session.
+```
+history
+```
+
+```
+root@21ddf621687e:/# history
+    1  echo $0
+    2  history
+root@21ddf621687e:/#
+```
+#### Usage of `!<number>`
+- It saves time by allowing you to quickly re-run previously executed commands without typing them again.
+
+Example usage:-
+```
+root@21ddf621687e:/# echo $0
+/bin/bash`
+root@21ddf621687e:/# history
+    1  echo $0
+    2  history
+root@21ddf621687e:/# !2
+history
+    1  echo $0
+    2  history
+root@21ddf621687e:/# !1
+echo $0
+/bin/bash
+```
 
 
 
