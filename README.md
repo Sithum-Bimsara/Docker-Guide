@@ -926,7 +926,7 @@ The `apt-get` command is an older interface for managing packages, but it is sti
 
 1. **Check if `nano` is Installed:**  
    Run the `nano` command to check if it is installed. If it is not, you will see an error: `Command not found`.
-![Screenshot (9195).png](attachment:3dc42e53-af61-48ca-844a-dc66d5ca65dc.png)
+![Screenshot (9203)](assets/Screenshot(9195).png)
 
 
 
@@ -936,7 +936,7 @@ The `apt-get` command is an older interface for managing packages, but it is sti
    
    `apt install nano`
 
-   ![Screenshot (9201).png](attachment:56e96e4a-15b1-4c26-aaa7-57f808aee4ac.png)
+   ![Screenshot (9203)](assets/Screenshot(9201).png)
 
    
    If you see a error like this you have to update apt packege list using `apt update`.
@@ -944,12 +944,12 @@ The `apt-get` command is an older interface for managing packages, but it is sti
    Then you can run `apt install nano` without errors.
 
    
-   ![Screenshot (9199).png](attachment:d8ba197e-5041-4a32-b9b3-4c13a82251bb.png)
+   ![Screenshot (9199)](assets/Screenshot(9199).png)
 
 5. **Open a File with `nano`:**  
    Create or edit a file using the `nano` command:
 
-     ![Screenshot (9196).png](attachment:8652194f-6fb0-4f69-841a-131628d05326.png)
+     ![Screenshot (9203)](assets/Screenshot(9196).png)
    
    `nano <file-name>` or just `nano`
  
@@ -960,21 +960,21 @@ The `apt-get` command is an older interface for managing packages, but it is sti
    - **Cut Line:** Press `Ctrl + K`.
    - **Paste Line:** Press `Ctrl + U`.
 
-    ![Screenshot (9198).png](attachment:741997f0-0df6-435e-a635-a3cd067be9b9.png)
+   ![Screenshot (9203)](assets/Screenshot(9198).png)
 
 5. **Remove `nano`:**  
    If you no longer need `nano`, remove it using:
   
    `apt remove nano`
 
-    ![Screenshot (9197).png](attachment:269501ac-66c9-420b-a82a-089ee2280991.png)
+   ![Screenshot (9197)](assets/Screenshot(9197).png)
 
     `nano` is ideal for quick edits and is beginner-friendly compared to other text editors like `vim` or `emacs`.
 # Linux File System
 
 The Linux file system is a hierarchical structure that starts from the root directory (`/`) and expands into various directories that serve different purposes. Below is an overview of the key directories in the Linux file system:
 
-![Screenshot (9205).png](attachment:b7b83964-07b0-49b0-b131-9def47bbe024.png)
+![Screenshot (9203)](assets/Screenshot(9205).png)
 
 ## Root Directory (`/`)
 The root directory is the starting point of the Linux file system. All other directories and files branch out from here.
@@ -1006,8 +1006,7 @@ This approach simplifies the system and allows developers to use standard file o
 
 # Windows File System Details
 
-![Screenshot (9203).png](attachment:80d67e57-bef9-4753-99db-d8a26e2d50f1.png)
-
+![Screenshot (9203)](assets/Screenshot(9203).png)
 # Windows File System
 
 The Windows file system organizes files and directories under drive letters, such as `C:\`. Each drive serves as a separate root directory.
