@@ -1484,7 +1484,7 @@ find -type f -name "file.txt"
 - Example output:
   ```
   ./file.txt
-  ``
+  ```
 
   
 ### 5. **Find Files by Name**
