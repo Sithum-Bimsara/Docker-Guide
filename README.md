@@ -1957,7 +1957,7 @@ docker exec -it -u john 2f34567abcd bash
 ```
 - `-u sithum`: Runs the command as the user `sithum` within the container.
 
-![ss](assets/Screenshot_(9356).png)
+![ss](assets/Screenshot-(9356).png)
 
 
 ---
