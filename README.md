@@ -1655,4 +1655,313 @@ Result:
 
 The working directory will remain unchanged.
 
+# Linux Environment Variables Guide
+
+Environment variables are a critical aspect of Linux, enabling customization and controlling system behavior. Below is a guide explaining common commands and techniques to work with environment variables based on your examples.
+
+---
+
+## Listing Environment Variables
+- **Command:** `printenv`
+- **Description:** Lists all current environment variables and their values.
+- **Example:**
+  ```bash
+  printenv
+  ```
+
+---
+
+## Viewing a Specific Environment Variable
+- **Command:** `echo $VARIABLE_NAME`
+- **Description:** Displays the value of a specific environment variable.
+- **Example:**
+  
+#### Checking PATH Variable
+- **Command:** `echo $PATH`
+- **Description:** Shows the directories included in the system’s PATH variable.
+- **Example:**
+  ```bash
+  echo $PATH
+  ```
+---
+
+## Setting Environment Variables Temporarily
+- **Command:** `export VARIABLE_NAME=value`
+- **Description:** Sets an environment variable for the current session.
+- **Example:**
+  ```bash
+  export DB_USER=sithum
+  echo $DB_USER
+  ```
+  
+  Output:
+  ```bash
+  sithum
+  ```
+**But this is only for this terminal session only. If you open a new termoinal then these variables are not in there.**
+---
+
+## Making Environment Variables Persistent
+### Method 1: Adding to `.bashrc` in home directory.
+1. Navigate to the home directory:
+   ```bash
+   cd ~
+   ```
+2. Open or edit the `.bashrc` file:
+   ```bash
+   nano .bashrc
+   ```
+3. Add the variable at the end of the file:
+   ```bash
+   export VARIABLE_NAME=value
+   ```
+4. Apply the changes by sourcing the file:
+   ```bash
+   source .bashrc
+   ```
+5. Verify:
+   ```bash
+   echo $VARIABLE_NAME
+   ```
+
+### Method 2: Directly appending the variable with value to the `.bashrc` file in home directory.
+
+```bash
+echo DB_USER=sithum >> .bashrc
+source .bashrc
+echo $DB_USER
+```
+Output:
+```bash
+sithum
+```
+
+---
+
+# Linux Process Management
+
+In Linux, a **process** is an instance of a running program. Each process is assigned a unique **Process ID (PID)** and is managed by the operating system. Understanding how to manage processes is essential for system administration.
+
+---
+
+## Listing Processes
+- **Command:** `ps`
+- **Description:** Displays information about the currently running processes.
+- **Example:**
+  ```bash
+  ps
+  ```
+  **Output:**
+  ```bash
+  PID   TTY          TIME CMD
+   1    pts/0    00:00:00 bash
+  34    pts/0    00:00:00 ps
+  ```
+
+---
+
+## Running a Process in the Background
+- **Command:** `command &`
+- **Description:** Executes a process in the background, allowing you to continue using the terminal.
+- **Example:**
+  ```bash
+  sleep 100 &
+  ```
+  **Output:**
+  ```bash
+  [1] 38
+  ```
+  Here, `38` is the PID of the background process.
+
+---
+
+## Listing Background Processes
+- **Command:** `jobs`
+- **Description:** Displays all running background jobs.
+- **Example:**
+  ```bash
+  jobs
+  ```
+
+---
+
+## Bringing a Background Process to the Foreground
+- **Command:** `fg %job_number`
+- **Description:** Resumes a background process in the foreground.
+- **Example:**
+  ```bash
+  fg %1
+  ```
+
+---
+
+## Killing a Process
+### Using `kill`
+- **Command:** `kill PID`
+- **Description:** Terminates a process using its PID.
+- **Example:**
+  ```bash
+  kill 38
+  ```
+  **Output:**
+  ```bash
+  [2]+  Terminated  sleep 100
+  ```
+
+### Using `killall`
+- **Command:** `killall process_name`
+- **Description:** Terminates all processes with a specific name.
+- **Example:**
+  ```bash
+  killall sleep
+  ```
+
+---
+
+## Viewing Process Tree
+- **Command:** `pstree`
+- **Description:** Displays a hierarchical tree of all running processes.
+- **Example:**
+  ```bash
+  pstree
+  ```
+
+---
+
+## Checking Process Status in Real-Time
+- **Command:** `top` or `htop`
+- **Description:** Monitors running processes and system resource usage in real time.
+- **Example:**
+  ```bash
+  top
+  ```
+![ss](assets/Screenshot_(9326).png)
+
+---
+# Managing Users in Linux
+---
+
+## User Management Commands
+
+### Adding a User: `useradd`
+The `useradd` command is used to create a new user.
+
+![ss](assets/Screenshot_(9350).png)
+
+#### Example:
+```bash
+useradd -m sithum
+```
+- `-m`: Creates the user’s home directory at `/home/sithum`.
+
+After running this command, an entry is created in the `/etc/passwd` file.
+
+### Modifying a User: `usermod`
+The `usermod` command modifies user properties.
+
+![ss](assets/Screenshot_(9352).png)
+
+#### Example:
+```bash
+usermod -s /bin/bash sithum
+```
+- `-s`: Changes the default shell for the user. Here, the shell is changed to `/bin/bash` for the user `sithum`.
+
+### Deleting a User: `userdel`
+The `userdel` command removes a user from the system.
+
+#### Example:
+```bash
+userdel sithum
+```
+- This command deletes the user, but their home directory may still remain unless additional flags are used (e.g., `userdel -r sithum`).
+
+---
+
+## Understanding `cat /etc/passwd`
+The `/etc/passwd` file stores information about system users. Each line in the file represents a user and has the following structure:
+
+```plaintext
+username:x:UID:GID:comment:home_directory:shell
+```
+
+#### Example Entry:
+```plaintext
+sithum:x:1001:1001::/home/sithum:/bin/sh
+```
+- `sithum`: Username.
+- `x`: Placeholder for the password (actual password is stored in `/etc/shadow`).
+- `1001`: User ID (UID).
+- `1001`: Group ID (GID).
+- `` (empty): Comment field, typically used for user description.
+- `/home/sithum`: User’s home directory.
+- `/bin/sh`: Default shell assigned to the user.
+
+
+![ss](assets/Screenshot_(9353).png)
+
+### Difference Between `/bin/sh` and `/bin/bash`
+- `/bin/sh`: A symbolic link to a shell, often a minimal implementation (e.g., `dash` in Ubuntu).
+- `/bin/bash`: A more feature-rich shell, commonly used for scripting and interactive use.
+
+
+```bash
+usermod -s /bin/bash sithum
+```
+- `-s`: Changes the default shell for the user. Here, the shell is changed to `/bin/bash` for the user `sithum`
+---
+
+![ss](assets/Screenshot_(9354).png)
+
+## Understanding `/etc/shadow`
+The `/etc/shadow` file contains encrypted user passwords and additional metadata for password management. Access to this file is restricted to the `root` user.
+
+![ss](assets/Screenshot_(9355).png)
+
+#### Example Entry:
+```plaintext
+sithum:$6$abc123$encryptedpassword:19485:0:99999:7:::
+```
+- `sithum`: Username.
+- `$6$abc123$encryptedpassword`: Encrypted password (hashed using SHA-512).
+- `19485`: Last password change (in days since Jan 1, 1970).
+- `0`: Minimum days before a password change.
+- `99999`: Maximum days before a password change.
+- `7`: Days before password expiry to issue a warning.
+
+---
+
+## Docker User Management
+
+### Viewing Running Containers: `docker ps`
+The `docker ps` command lists all running containers.
+
+#### Example Output:
+```plaintext
+CONTAINER ID   IMAGE     COMMAND   CREATED        STATUS       PORTS   NAMES
+2f34567abcd   ubuntu    "/bin/bash"   2 hours ago   Up 2 hours           container1
+```
+
+### Accessing a Container:
+#### Example:
+```bash
+docker exec -it 2f34567abcd bash
+```
+- `-it`: Opens an interactive terminal session.
+- `2f34567abcd`: Container ID.
+- `bash`: The command to run inside the container.
+
+#### Running as a Specific User:
+```bash
+docker exec -it -u john 2f34567abcd bash
+```
+- `-u sithum`: Runs the command as the user `sithum` within the container.
+
+![ss](assets/Screenshot_(9356).png)
+
+
+---
+
+
+
 
